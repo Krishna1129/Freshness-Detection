@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Freshness Cloud • Quality Intelligence for Produce</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: '#f0fdf4',
+                100: '#dcfce7',
+                200: '#bbf7d0',
+                500: '#22c55e',
+                600: '#16a34a',
+                700: '#15803d'
+              },
+              accent: {
+                500: '#38bdf8',
+                600: '#0ea5e9'
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-950 text-slate-50 antialiased">
+    <div class="min-h-screen w-screen flex flex-col">
+      <!-- Navbar -->
+      <header class="border-b border-slate-800/80 bg-slate-950/70 backdrop-blur">
+        <div class="w-full px-6 lg:px-10">
+          <div class="flex h-16 items-center justify-between gap-4">
+            <a href="{{ url_for('index') }}" class="flex items-center gap-3">
+              <div
+                class="h-9 w-9 rounded-2xl bg-gradient-to-br from-brand-500 via-emerald-400 to-accent-500 p-[1px] shadow-[0_18px_40px_rgba(34,197,94,0.55)]"
+              >
+                <div
+                  class="flex h-full w-full items-center justify-center rounded-[0.85rem] bg-gradient-to-b from-emerald-50 via-emerald-300 to-emerald-600 text-slate-900 text-sm font-bold"
+                >
+                  F
+                </div>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-sm font-semibold tracking-wide">
+                  Freshness Cloud
+                </span>
+                <span class="text-xs text-slate-400">
+                  Quality Intelligence for QuickCommerce
+                </span>
+              </div>
+            </a>
+            <nav class="hidden items-center gap-6 text-xs font-medium text-slate-300 md:flex">
+              <a href="{{ url_for('index') }}" class="hover:text-slate-50 transition-colors">
+                Overview
+              </a>
+              <a href="{{ url_for('live_feed') }}" class="hover:text-slate-50 transition-colors">
+                Live monitor
+              </a>
+              <a href="#batch" class="hover:text-slate-50 transition-colors">
+                Batch images
+              </a>
+              <span class="inline-flex items-center gap-1 rounded-full border border-emerald-500/40 px-2 py-1 text-[10px] text-emerald-300 bg-emerald-500/10">
+                <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(74,222,128,0.9)]"></span>
+                YOLOv8 • Realtime
+              </span>
+            </nav>
+            <div class="flex items-center gap-2">
+              <a
+                href="{{ url_for('live_feed') }}"
+                class="hidden rounded-full border border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-200 hover:bg-slate-800/70 md:inline-flex"
+              >
+                Open live monitor
+              </a>
+              <a
+                href="#get-started"
+                class="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-brand-500 to-accent-500 px-3.5 py-1.5 text-xs font-semibold text-slate-950 shadow-[0_12px_30px_rgba(34,197,94,0.5)] hover:shadow-[0_16px_40px_rgba(56,189,248,0.55)] transition"
+              >
+                Start scanning
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Hero + dashboard -->
+      <main class="flex-1 w-full">
+        <section class="border-b border-slate-900/60 bg-gradient-to-b from-slate-950 via-slate-950 to-slate-950/90">
+          <div class="w-full px-6 pb-10 pt-8 sm:px-8 sm:pt-12 lg:px-10 lg:pb-16">
+            <div class="grid gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:items-center">
+              <!-- Hero copy -->
+              <div>
+                <div class="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/5 px-2.5 py-1 text-[11px] text-emerald-200 mb-5">
+                  <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(74,222,128,0.9)]"></span>
+                  Automated freshness checks for every crate.
+                </div>
+                <h1 class="text-3xl font-semibold tracking-tight text-slate-50 sm:text-4xl lg:text-[2.6rem]">
+                  Catch rotten produce
+                  <span class="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                    before it leaves the warehouse.
+                  </span>
+                </h1>
+                <p class="mt-4 text-sm leading-relaxed text-slate-400 sm:text-[0.925rem]">
+                  Freshness Cloud plugs into your camera feed and surfaces quality issues in seconds.
+                  Use live monitoring on loading bays or run batch checks on sample images—no ML team required.
+                </p>
+                <div class="mt-6 flex flex-wrap items-center gap-3" id="get-started">
+                  <a
+                    href="{{ url_for('live_feed') }}"
+                    class="inline-flex items-center gap-2 rounded-full bg-slate-50 px-4 py-2 text-xs font-semibold text-slate-900 shadow-[0_16px_40px_rgba(15,23,42,0.45)] hover:bg-slate-100 transition"
+                  >
+                    Start live monitoring
+                    <span class="text-[11px] text-slate-500">Requires webcam</span>
+                  </a>
+                  <a
+                    href="#batch"
+                    class="inline-flex items-center gap-2 rounded-full border border-slate-700/70 bg-slate-900/40 px-4 py-2 text-xs font-medium text-slate-200 hover:bg-slate-900/80 transition"
+                  >
+                    Upload a test image
+                  </a>
+                </div>
+                <dl class="mt-8 grid grid-cols-3 gap-3 text-xs text-slate-300">
+                  <div class="rounded-2xl border border-slate-800/80 bg-slate-900/60 px-3 py-3">
+                    <dt class="text-[11px] text-slate-500">Detection latency</dt>
+                    <dd class="mt-1 text-sm font-semibold text-slate-50">&lt; 200ms</dd>
+                  </div>
+                  <div class="rounded-2xl border border-slate-800/80 bg-slate-900/60 px-3 py-3">
+                    <dt class="text-[11px] text-slate-500">Classes tracked</dt>
+                    <dd class="mt-1 text-sm font-semibold text-slate-50">Fresh / Rotten</dd>
+                  </div>
+                  <div class="rounded-2xl border border-slate-800/80 bg-slate-900/60 px-3 py-3">
+                    <dt class="text-[11px] text-slate-500">Deployment</dt>
+                    <dd class="mt-1 text-sm font-semibold text-slate-50">On‑prem ready</dd>
+                  </div>
+                </dl>
+              </div>
+
+              <!-- Dashboard-style visual -->
+              <div class="relative">
+                <div
+                  class="pointer-events-none absolute -left-10 top-[-5rem] h-56 w-56 rounded-full bg-emerald-500/10 blur-3xl"
+                ></div>
+                <div
+                  class="pointer-events-none absolute -right-6 bottom-[-3rem] h-40 w-40 rounded-full bg-cyan-500/10 blur-3xl"
+                ></div>
+                <div
+                  class="relative rounded-3xl border border-slate-800/90 bg-gradient-to-b from-slate-900/80 via-slate-950 to-slate-950 shadow-[0_24px_80px_rgba(15,23,42,0.9)] p-4 sm:p-5"
+                >
+                  <div class="flex items-center justify-between text-xs text-slate-400">
+                    <span class="inline-flex items-center gap-2">
+                      <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                      QC Overview
+                    </span>
+                    <span class="rounded-full bg-slate-900/80 px-2 py-0.5 text-[10px] text-slate-400">
+                      Live · Demo
+                    </span>
+                  </div>
+                  <div class="mt-4 grid gap-3 text-xs sm:grid-cols-3">
+                    <div class="rounded-2xl border border-slate-800 bg-slate-900/80 p-3">
+                      <p class="text-[11px] text-slate-400">Today’s crates scanned</p>
+                      <p class="mt-1 text-lg font-semibold text-slate-50">128</p>
+                      <p class="mt-1 text-[10px] text-emerald-300">
+                        +18% vs yesterday
+                      </p>
+                    </div>
+                    <div class="rounded-2xl border border-slate-800 bg-slate-900/80 p-3">
+                      <p class="text-[11px] text-slate-400">Rejected items</p>
+                      <p class="mt-1 text-lg font-semibold text-rose-300">7</p>
+                      <p class="mt-1 text-[10px] text-rose-300/80">
+                        Auto‑flagged for manual review
+                      </p>
+                    </div>
+                    <div class="rounded-2xl border border-slate-800 bg-slate-900/80 p-3">
+                      <p class="text-[11px] text-slate-400">Detection confidence</p>
+                      <p class="mt-1 text-lg font-semibold text-slate-50">0.94</p>
+                      <p class="mt-1 text-[10px] text-slate-400">
+                        Weighted across all detections
+                      </p>
+                    </div>
+                  </div>
+                  <div class="mt-4 h-28 rounded-2xl border border-slate-800 bg-slate-900/80 p-3">
+                    <div class="flex items-center justify-between text-[11px] text-slate-400">
+                      <span>Throughput (crates / hour)</span>
+                      <span>Last 4 hours</span>
+                    </div>
+                    <div class="mt-2 flex h-16 items-end gap-1.5">
+                      <div class="h-7 flex-1 rounded-full bg-gradient-to-t from-slate-800 to-slate-600"></div>
+                      <div class="h-10 flex-1 rounded-full bg-gradient-to-t from-emerald-500/40 to-emerald-300"></div>
+                      <div class="h-12 flex-1 rounded-full bg-gradient-to-t from-emerald-500/50 to-emerald-300"></div>
+                      <div class="h-9 flex-1 rounded-full bg-gradient-to-t from-cyan-500/40 to-cyan-300"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Detection modes -->
+        <section id="batch" class="border-t border-slate-900/80 bg-slate-950/95">
+          <div class="w-full px-6 py-8 sm:px-8 lg:px-10 lg:py-10">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <h2 class="text-sm font-semibold text-slate-100">
+                  Detection modes
+                </h2>
+                <p class="mt-1 text-xs text-slate-400">
+                  Switch between continuous monitoring and on‑demand checks. Both modes share the same underlying model.
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-5 grid gap-4 md:grid-cols-2">
+              <!-- Live mode card -->
+              <a
+                href="{{ url_for('live_feed') }}"
+                class="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-800/80 bg-gradient-to-br from-slate-950 via-slate-950 to-slate-900/80 p-4 shadow-[0_18px_50px_rgba(15,23,42,0.9)] transition hover:border-emerald-500/60 hover:shadow-[0_24px_70px_rgba(16,185,129,0.45)]"
+              >
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-2 text-[11px] text-emerald-300">
+                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(74,222,128,0.9)]"></span>
+                    Live monitor
+                  </div>
+                  <span class="text-[10px] text-slate-500">Best for loading bays</span>
+                </div>
+                <div class="mt-3">
+                  <p class="text-sm font-semibold text-slate-50">
+                    Real‑time webcam detection
+                  </p>
+                  <p class="mt-1 text-xs text-slate-400">
+                    Stream any connected camera and watch detections update frame‑by‑frame with bounding boxes and scores.
+                  </p>
+                </div>
+                <div class="mt-4 flex items-center justify-between text-[11px] text-slate-400">
+                  <span>Latency optimized • Continuous</span>
+                  <span class="inline-flex items-center gap-1 text-emerald-300">
+                    Open live view
+                    <span class="transition-transform group-hover:translate-x-0.5">↗</span>
+                  </span>
+                </div>
+              </a>
+
+              <!-- Image upload card -->
+              <div
+                class="relative flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-800/80 bg-gradient-to-br from-slate-950 via-slate-950 to-slate-900/80 p-4 shadow-[0_18px_50px_rgba(15,23,42,0.9)]"
+              >
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-2 text-[11px] text-cyan-300">
+                    <span class="h-1.5 w-1.5 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(56,189,248,0.9)]"></span>
+                    Batch check
+                  </div>
+                  <span class="text-[10px] text-slate-500">Best for QA samples</span>
+                </div>
+                <div class="mt-3">
+                  <p class="text-sm font-semibold text-slate-50">
+                    Upload crate or tray images
+                  </p>
+                  <p class="mt-1 text-xs text-slate-400">
+                    Drag a photo from your line or sampling process and we’ll return an annotated overlay in seconds.
+                  </p>
+                </div>
+                <form
+                  class="mt-4 space-y-2"
+                  action="{{ url_for('detect_image') }}"
+                  method="post"
+                  enctype="multipart/form-data"
+                >
+                  <label
+                    for="image"
+                    class="flex cursor-pointer items-center justify-between rounded-xl border border-dashed border-slate-700 bg-slate-900/70 px-3 py-2 text-[11px] text-slate-300 hover:border-slate-500 hover:bg-slate-900/90 transition"
+                  >
+                    <span class="flex flex-col">
+                      <span class="font-medium text-slate-100">Upload image (JPG, PNG)</span>
+                      <span class="text-[10px] text-slate-500">
+                        Good lighting &amp; centered produce improve detection accuracy.
+                      </span>
+                    </span>
+                    <span class="rounded-full bg-slate-800 px-2 py-0.5 text-[10px] text-slate-200">
+                      Browse…
+                    </span>
+                    <input id="image" name="image" type="file" accept="image/*" class="hidden" required />
+                  </label>
+                  <button
+                    type="submit"
+                    class="inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-slate-50 px-3 py-1.5 text-[11px] font-semibold text-slate-950 hover:bg-slate-100 transition"
+                  >
+                    Run detection on image
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer class="border-t border-slate-900/80 bg-slate-950/95">
+        <div class="flex w-full flex-col items-center justify-between gap-2 px-6 py-4 text-[11px] text-slate-500 sm:flex-row sm:px-8 lg:px-10">
+          <span>Freshness Cloud · Internal tooling for warehouse quality teams.</span>
+          <span>Built with Flask · Designed for modern ops teams.</span>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

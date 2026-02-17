@@ -1,0 +1,5 @@
+Flask==2.3.2
+opencv-python==4.8.0.74
+numpy==1.23.5
+roboflow==0.2.20
+uuid==1.30

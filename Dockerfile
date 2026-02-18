@@ -1,9 +1,9 @@
 # Use Python 3.10 (matches your requirements)
 FROM python:3.10-slim
 
-# Install system dependencies for OpenCV
+# Install system dependencies for OpenCV (libgl1 replaces libgl1-mesa-glx on Debian Bookworm+)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libgl1-mesa-glx \
+    libgl1 \
     libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 

@@ -2,6 +2,8 @@
 
 A web app that detects fresh vs rotten fruits and vegetables using object detection. Use a **live webcam** or **upload an image** to get bounding boxes and labels (e.g. fresh apple, rotten apple) with confidence scores. Built with Flask, OpenCV, and a Roboflow-hosted model.
 
+**Live demo:** [https://freshness-detection-k91j.onrender.com/](https://freshness-detection-k91j.onrender.com/)
+
 ## Features
 
 - **Image detection** — Upload a photo; get an annotated image plus a clear text list of detections (class + confidence %) on the result page.

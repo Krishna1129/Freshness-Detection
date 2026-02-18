@@ -22,11 +22,13 @@
       }
     </script>
     <style>
-      html,
+      html { font-size: 16px; }
       body {
         margin: 0;
         padding: 0;
         overflow-x: hidden;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        -webkit-font-smoothing: antialiased;
       }
     </style>
   </head>
@@ -41,23 +43,23 @@
                 class="h-9 w-9 rounded-2xl bg-gradient-to-br from-brand-500 via-emerald-400 to-accent-500 p-[1px] shadow-[0_18px_40px_rgba(34,197,94,0.55)]"
               >
                 <div
-                  class="flex h-full w-full items-center justify-center rounded-[0.85rem] bg-gradient-to-b from-emerald-50 via-emerald-300 to-emerald-600 text-slate-900 text-sm font-bold"
+                  class="flex h-full w-full items-center justify-center rounded-[0.85rem] bg-gradient-to-b from-emerald-50 via-emerald-300 to-emerald-600 text-slate-900 text-base font-bold"
                 >
                   F
                 </div>
               </div>
               <div class="flex flex-col">
-                <span class="text-sm font-semibold tracking-wide">
+                <span class="text-base font-semibold tracking-wide">
                   Freshness Cloud
                 </span>
-                <span class="text-xs text-slate-400">
+                <span class="text-sm text-slate-400">
                   Detection result
                 </span>
               </div>
             </a>
             <a
               href="{{ url_for('index') }}"
-              class="inline-flex items-center gap-1 rounded-full border border-slate-700/80 px-3 py-1.5 text-[11px] font-medium text-slate-200 hover:bg-slate-900/80 transition"
+              class="inline-flex items-center gap-1 rounded-full border border-slate-700/80 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-slate-900/80 transition"
             >
               ← Back to detection modes
             </a>
@@ -70,10 +72,10 @@
         <div class="w-full px-6 py-8 sm:px-8 lg:px-10 lg:py-10">
           <div class="grid gap-8 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:items-start">
             <section>
-              <h1 class="text-lg font-semibold tracking-tight text-slate-50">
+              <h1 class="text-xl font-semibold tracking-tight text-slate-50">
                 Annotated detection result
               </h1>
-              <p class="mt-2 text-xs text-slate-400">
+              <p class="mt-2 text-sm text-slate-400">
                 The overlay highlights each detected object. Use this view to quickly verify which items should be
                 removed from circulation.
               </p>
@@ -89,47 +91,64 @@
               </div>
             </section>
 
-            <aside class="space-y-4">
-              <div class="rounded-2xl border border-slate-800 bg-slate-950/80 p-4">
-                <h2 class="text-xs font-semibold text-slate-100">
+            <aside class="space-y-5">
+              <!-- Detection results as clear text -->
+              <div class="rounded-2xl border border-emerald-500/30 bg-slate-900/80 p-5">
+                <h2 class="text-lg font-semibold text-slate-100 mb-3">
+                  Detection results
+                </h2>
+                {% if predictions %}
+                <ul class="space-y-2 list-none p-0 m-0">
+                  {% for p in predictions %}
+                  <li class="text-base font-medium text-slate-100 py-2 px-3 rounded-lg bg-slate-800/60 border border-slate-700/60">
+                    <span class="capitalize">{{ p.class }}</span>
+                    <span class="text-emerald-300 ml-1">— {{ (p.confidence * 100)|round(0)|int }}% confidence</span>
+                  </li>
+                  {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-sm text-slate-400">No objects detected above the confidence threshold.</p>
+                {% endif %}
+              </div>
+
+              <div class="rounded-2xl border border-slate-800 bg-slate-950/80 p-5">
+                <h2 class="text-base font-semibold text-slate-100 mb-3">
                   How to read this view
                 </h2>
-                <dl class="mt-3 space-y-2 text-[11px] text-slate-300">
+                <dl class="mt-2 space-y-3 text-sm text-slate-300">
                   <div>
                     <dt class="font-medium text-slate-200">Bounding boxes</dt>
-                    <dd class="text-slate-400">
-                      Each box marks a detected fruit or vegetable, including label and model confidence score.
+                    <dd class="text-slate-400 mt-0.5">
+                      Each box marks a detected fruit or vegetable, with label and confidence score.
                     </dd>
                   </div>
                   <div>
                     <dt class="font-medium text-slate-200">Confidence</dt>
-                    <dd class="text-slate-400">
-                      Scores closer to 1.0 indicate stronger model certainty. Prioritise low‑confidence edge cases for
-                      manual review.
+                    <dd class="text-slate-400 mt-0.5">
+                      Scores closer to 100% mean stronger model certainty. Review low-confidence items manually.
                     </dd>
                   </div>
                   <div>
                     <dt class="font-medium text-slate-200">Operational use</dt>
-                    <dd class="text-slate-400">
-                      Use this view as part of an intake checklist: scan, review flagged items, then approve or reject
-                      the batch.
+                    <dd class="text-slate-400 mt-0.5">
+                      Use this as an intake checklist: scan, review flagged items, then approve or reject the batch.
                     </dd>
                   </div>
                 </dl>
               </div>
 
-              <div class="rounded-2xl border border-slate-800 bg-slate-950/80 p-4 text-[11px] text-slate-300">
-                <h2 class="text-xs font-semibold text-slate-100">
+              <div class="rounded-2xl border border-slate-800 bg-slate-950/80 p-5 text-sm text-slate-300">
+                <h2 class="text-base font-semibold text-slate-100 mb-3">
                   Next steps
                 </h2>
-                <ul class="mt-2 space-y-1 list-disc pl-4">
-                  <li>Re‑scan the same batch from a different angle if boxes look incomplete.</li>
-                  <li>Capture and store annotated examples to further tune your model.</li>
+                <ul class="mt-2 space-y-2 list-disc pl-5">
+                  <li>Re-scan from a different angle if boxes look incomplete.</li>
+                  <li>Save annotated examples to tune your model.</li>
                   <li>Share this screen with your QC team as a visual checklist.</li>
                 </ul>
                 <a
                   href="{{ url_for('index') }}"
-                  class="mt-4 inline-flex items-center gap-1 rounded-full bg-slate-50 px-3 py-1.5 text-[11px] font-semibold text-slate-950 hover:bg-slate-100 transition"
+                  class="mt-4 inline-flex items-center gap-1 rounded-full bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-slate-100 transition"
                 >
                   Run another detection
                 </a>
@@ -141,9 +160,9 @@
 
       <!-- Footer -->
       <footer class="border-t border-slate-900/80 bg-slate-950/95">
-        <div class="flex w-full flex-col items-center justify-between gap-2 px-6 py-4 text-[11px] text-slate-500 sm:flex-row sm:px-8 lg:px-10">
+        <div class="flex w-full flex-col items-center justify-between gap-2 px-6 py-4 text-sm text-slate-500 sm:flex-row sm:px-8 lg:px-10">
           <span>Freshness Cloud · Visual QC layer for your supply chain.</span>
-          <span>Review, refine, and re‑scan as needed.</span>
+          <span>Review, refine, and re-scan as needed.</span>
         </div>
       </footer>
     </div>

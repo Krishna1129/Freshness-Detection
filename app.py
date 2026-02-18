@@ -18,41 +18,42 @@ UPLOAD_FOLDER = 'static/uploads/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Helper function for object detection on an image
+# Returns (result_image_path, list of {class, confidence} for display as text)
 def detect_on_image(image_path):
     image = cv2.imread(image_path)
     results = model.predict(image, confidence=40, overlap=30).json()
-    
+    predictions_list = []
+
     for prediction in results['predictions']:
         x, y, w, h = (
-            prediction['x'], 
-            prediction['y'], 
-            prediction['width'], 
+            prediction['x'],
+            prediction['y'],
+            prediction['width'],
             prediction['height']
         )
         class_name = prediction['class']
         confidence = prediction['confidence']
+        predictions_list.append({'class': class_name, 'confidence': round(confidence, 2)})
 
         # Calculate bounding box coordinates
         x_min = int(x - w / 2)
         y_min = int(y - h / 2)
         x_max = int(x + w / 2)
         y_max = int(y + h / 2)
-        
+
         # Draw the bounding box
         cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
-        
+
         # Create label with class and confidence score
         label = f"{class_name}: {confidence:.2f}"
-        
-        # Put the label above the bounding box
         cv2.putText(image, label, (x_min, y_min - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
     # Save the result image with a unique filename
     result_filename = f'result_{uuid.uuid4().hex}.jpg'
     result_image_path = os.path.join(UPLOAD_FOLDER, result_filename)
     cv2.imwrite(result_image_path, image)
-    
-    return result_image_path
+
+    return result_image_path, predictions_list
 
 # Route for homepage with detection options
 @app.route('/')
@@ -76,15 +77,12 @@ def detect_image():
         file.save(image_path)
         
         # Perform detection on the image
-        result_image_path = detect_on_image(image_path)
-        result_image_filename = os.path.basename(result_image_path)  # Get the filename only
-        os.remove(image_path)  # Optionally remove the uploaded image after processing
-        
-        # Generate a UUID for cache-busting
+        result_image_path, predictions = detect_on_image(image_path)
+        result_image_filename = os.path.basename(result_image_path)
+        os.remove(image_path)
+
         unique_id = uuid.uuid4().hex
-        
-        # Render the result page with the processed image and UUID
-        return render_template('result.html', result_image=result_image_filename, unique_id=unique_id)
+        return render_template('result.html', result_image=result_image_filename, unique_id=unique_id, predictions=predictions)
 
 # Route for handling live webcam feed detection
 @app.route('/live_feed')

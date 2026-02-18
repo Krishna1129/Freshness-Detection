@@ -1,0 +1,23 @@
+# Uploaded and generated images
+static/uploads/
+!static/uploads/.gitkeep
+
+# Python
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.Python
+*.so
+
+# IDE and OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Env and secrets
+.env
+.env.local
+*.pem

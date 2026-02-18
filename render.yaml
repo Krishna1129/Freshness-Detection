@@ -1,0 +1,11 @@
+# Render Blueprint - Deploy with "New > Blueprint" in Render Dashboard
+# Connect your repo and deploy; set ROBOFLOW_API_KEY in the service's Environment tab
+
+services:
+  - type: web
+    runtime: docker
+    name: freshness-detection
+    healthCheckPath: /
+    envVars:
+      - key: ROBOFLOW_API_KEY
+        sync: false   # Set this in Render Dashboard (Environment) after first deploy

@@ -7,8 +7,8 @@ import uuid  # Add this to generate unique filenames
 import webbrowser
 import threading
 
-# Initialize Roboflow with your API key (use your own API key)
-rf = Roboflow(api_key="RBMCiagFraeIHPvptwcS")
+# Initialize Roboflow (set ROBOFLOW_API_KEY in Render for production)
+rf = Roboflow(api_key=os.environ.get("ROBOFLOW_API_KEY", "RBMCiagFraeIHPvptwcS"))
 project = rf.workspace().project("freshness-fruits-and-vegetables")
 model = project.version(7).model
 
@@ -123,7 +123,7 @@ def generate_live_feed():
             x_min = int(x - w / 2)
             y_min = int(y - h / 2)
             x_max = int(x + w / 2)
-            y_max = int(y + w / 2)
+            y_max = int(y + h / 2)
             
             # Draw the bounding box
             cv2.rectangle(frame, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
@@ -153,9 +153,11 @@ def video_feed():
 if __name__ == '__main__':
     if not os.path.exists(UPLOAD_FOLDER):
         os.makedirs(UPLOAD_FOLDER)
-    # Open the default system browser once the server is starting
-    def open_browser():
-        webbrowser.open_new_tab("http://localhost:5000/")
-
-    threading.Timer(1.0, open_browser).start()
-    app.run(debug=True, use_reloader=False)
+    # Only open browser when running locally (not in Docker/Render)
+    if os.environ.get('RUNNING_IN_DOCKER') != '1':
+        def open_browser():
+            webbrowser.open_new_tab("http://localhost:5000/")
+        threading.Timer(1.0, open_browser).start()
+    # Render sets PORT; listen on all interfaces in production
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
